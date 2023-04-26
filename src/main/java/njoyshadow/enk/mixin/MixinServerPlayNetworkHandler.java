@@ -51,7 +51,7 @@ public abstract class MixinServerPlayNetworkHandler {
             }
         }
 
-        String Name_Message = !IsCrime ? String.format("<%s> %s",this.player.getName().getString(),Message) : Message ;
+        String Name_Message = !IsCrime ? String.format("<%s> %s",this.player.getDisplayName(),Message) : Message ;
 
         //TODO what is this?
         this.server.getMessageDecorator().decorate(this.player,Text.of(Message)).thenAccept(x ->{
