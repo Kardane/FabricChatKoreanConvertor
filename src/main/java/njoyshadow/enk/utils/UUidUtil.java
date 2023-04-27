@@ -7,7 +7,6 @@ import java.util.UUID;
 public class UUidUtil {
     public static List<EnKData> playerList = new ArrayList<>();
 
-    public static boolean IsCrime =false;
     public static class EnKData {
         private UUID playerUUID;
         private boolean IsEnable;

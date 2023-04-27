@@ -7,7 +7,6 @@
   "authors": [],
   "contact": {},
   "license": "Apache-2.0",
-  "icon": "assets/enk/icon.png",
   "environment": "server",
   "entrypoints": {
     "client": [
@@ -22,6 +21,6 @@
   "depends": {
     "fabricloader": ">=0.14.0",
     "fabric": "*",
-    "minecraft": "1.19.4"
+    "minecraft": "1.19.x"
   }
 }

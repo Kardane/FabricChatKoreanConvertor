@@ -27,7 +27,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import static njoyshadow.enk.utils.UUidUtil.IsCrime;
 
 
 @Mixin(ServerPlayNetworkHandler.class)
@@ -52,9 +51,7 @@ public abstract class MixinServerPlayNetworkHandler {
                 break;
             }
         }
-        Text NameText = this.player.getDisplayName();
-        Text MessageText = Text.literal(Message);
-        Text NameMessage = Text.literal("<").append(NameText).append("> ").append(MessageText);
+        Text NameMessage = Text.literal("<").append(this.player.getDisplayName()).append("> ").append(Text.literal(Message));
         Iterator IteratorPlayer = Arrays.stream(this.server.getPlayerNames()).iterator();
         ServerPlayerEntity serverPlayerEntity = this.server.getPlayerManager().getPlayer((String)IteratorPlayer.next());
 
