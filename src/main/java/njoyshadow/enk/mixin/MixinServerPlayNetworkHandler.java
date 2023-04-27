@@ -9,6 +9,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import njoyshadow.enk.utils.ExceptionStringUtil;
 import njoyshadow.enk.utils.UUidUtil;
 import org.spongepowered.asm.mixin.Final;
@@ -18,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import javax.naming.Name;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.concurrent.CompletableFuture;
@@ -38,7 +40,7 @@ public abstract class MixinServerPlayNetworkHandler {
 
     @Shadow public abstract ServerPlayerEntity getPlayer();
 
-    @Shadow protected abstract CompletableFuture<Text> decorateChat(String query);
+    //@Shadow protected abstract CompletableFuture<Text> decorateChat(String query);
 
     @Inject(method = "onChatMessage",at = @At(value ="HEAD"),cancellable = true)
     public void receiveMessage(ChatMessageC2SPacket packet, CallbackInfo ci) throws ExecutionException, InterruptedException, TimeoutException {
@@ -50,12 +52,17 @@ public abstract class MixinServerPlayNetworkHandler {
                 break;
             }
         }
+        Text NameText = this.player.getDisplayName();
+        Text MessageText = Text.literal(Message);
+        Text NameMessage = Text.literal("<").append(NameText).append("> ").append(MessageText);
+        Iterator IteratorPlayer = Arrays.stream(this.server.getPlayerNames()).iterator();
+        ServerPlayerEntity serverPlayerEntity = this.server.getPlayerManager().getPlayer((String)IteratorPlayer.next());
 
-        String Name_Message = !IsCrime ? String.format("<%s> %s",this.player.getName().getString(),Message) : Message ;
-
-        //TODO what is this?
+        serverPlayerEntity.sendMessageToClient(NameMessage, false);
+        System.out.println(NameMessage.getString());
+        /*TODO what is this?
         this.server.getMessageDecorator().decorate(this.player,Text.of(Message)).thenAccept(x ->{
-            System.out.println(String.format("DecoTxt %s ",x.getString()));
+            System.out.println(String.format("test %s ",x.getString()));
         });
         this.server.logChatMessage(Text.of(Message),MessageType.params(MessageType.CHAT, this.player),null);
         Iterator IteratorPlayer = Arrays.stream(this.server.getPlayerNames()).iterator();
@@ -67,5 +74,6 @@ public abstract class MixinServerPlayNetworkHandler {
                 //serverPlayerEntity.sendChatMessage((SentMessage) Text.of(Message),false,MessageType.params(MessageType.CHAT, this.player));
             }
         }
+        */
     }
 }
