@@ -27,6 +27,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import static net.minecraft.network.message.MessageType.CHAT;
 
 
 @Mixin(ServerPlayNetworkHandler.class)
@@ -52,25 +53,6 @@ public abstract class MixinServerPlayNetworkHandler {
             }
         }
         Text NameMessage = Text.literal("<").append(this.player.getDisplayName()).append("> ").append(Text.literal(Message));
-        Iterator IteratorPlayer = Arrays.stream(this.server.getPlayerNames()).iterator();
-        ServerPlayerEntity serverPlayerEntity = this.server.getPlayerManager().getPlayer((String)IteratorPlayer.next());
-
-        serverPlayerEntity.sendMessageToClient(NameMessage, false);
-        System.out.println(NameMessage.getString());
-        /*TODO what is this?
-        this.server.getMessageDecorator().decorate(this.player,Text.of(Message)).thenAccept(x ->{
-            System.out.println(String.format("test %s ",x.getString()));
-        });
-        this.server.logChatMessage(Text.of(Message),MessageType.params(MessageType.CHAT, this.player),null);
-        Iterator IteratorPlayer = Arrays.stream(this.server.getPlayerNames()).iterator();
-        while(IteratorPlayer.hasNext()){
-            ServerPlayerEntity serverPlayerEntity = this.server.getPlayerManager().getPlayer((String)IteratorPlayer.next());
-            Text text = Text.of(Name_Message);
-            if (text != null) {
-                serverPlayerEntity.sendMessageToClient(text, false);
-                //serverPlayerEntity.sendChatMessage((SentMessage) Text.of(Message),false,MessageType.params(MessageType.CHAT, this.player));
-            }
-        }
-        */
+        this.server.getPlayerManager().broadcast(NameMessage,false);
     }
 }
