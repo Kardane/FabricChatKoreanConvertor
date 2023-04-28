@@ -22,6 +22,5 @@ public class MixinOnConnect {
     @Inject(method = "onPlayerConnect", at = @At(value = "TAIL", target = "Lnet/minecraft/server/network/ServerPlayerEntity;onSpawn()V"))
     public void setEnk(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {
         EngTKor.Enk(player);
-        this.server.getPlayerManager().broadcast(Text.literal("test"),false);
     }
 }
